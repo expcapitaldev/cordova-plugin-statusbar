@@ -63,7 +63,11 @@ public class StatusBar extends CordovaPlugin {
                 setStatusBarBackgroundColor(preferences.getString("StatusBarBackgroundColor", "#000000"));
 
                 // Read 'StatusBarStyle' from config.xml, default is 'lightcontent'.
-                setStatusBarStyle(preferences.getString("StatusBarStyle", "lightcontent"));
+                String styleSetting = preferences.getString("StatusBarStyle", "lightcontent");
+                if (styleSetting.equalsIgnoreCase("blacktranslucent") || styleSetting.equalsIgnoreCase("blackopaque")) {
+                    LOG.w(TAG, styleSetting +" is deprecated and will be removed in next major release, use lightcontent");
+                }
+                setStatusBarStyle(styleSetting);
             }
         });
     }
@@ -183,6 +187,16 @@ public class StatusBar extends CordovaPlugin {
             return true;
         }
 
+        if ("styleDarkContent".equals(action)) {
+            this.cordova.getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    setStatusBarStyle("darkcontent");
+                }
+            });
+            return true;
+        }
+
         if ("styleBlackTranslucent".equals(action)) {
             this.cordova.getActivity().runOnUiThread(new Runnable() {
                 @Override
@@ -251,6 +265,7 @@ public class StatusBar extends CordovaPlugin {
 
                 String[] darkContentStyles = {
                     "default",
+                    "darkcontent"
                 };
 
                 String[] lightContentStyles = {
@@ -269,7 +284,7 @@ public class StatusBar extends CordovaPlugin {
                     return;
                 }
 
-                LOG.e(TAG, "Invalid style, must be either 'default', 'lightcontent' or the deprecated 'blacktranslucent' and 'blackopaque'");
+                LOG.e(TAG, "Invalid style, must be either 'default', 'lightcontent', 'darkcontent' or the deprecated 'blacktranslucent' and 'blackopaque'");
             }
         }
     }

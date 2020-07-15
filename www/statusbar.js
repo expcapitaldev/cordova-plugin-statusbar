@@ -49,7 +49,7 @@ var StatusBar = {
     },
 
     styleDefault: function () {
-        // dark text ( to be used on a light background )
+        // dark text ( to be used on a light background and on iOS depending on a device configuration )
         exec(null, null, "StatusBar", "styleDefault", []);
     },
 
@@ -58,13 +58,18 @@ var StatusBar = {
         exec(null, null, "StatusBar", "styleLightContent", []);
     },
 
+    styleDarkContent: function () {
+        // dark text ( to be used on a light background )
+        exec(null, null, "StatusBar", "styleDarkContent", []);
+    },
+
     styleBlackTranslucent: function () {
-        // #88000000 ? Apple says to use lightContent instead
+        console.warn('styleBlackTranslucent is deprecated and will be removed in next major release, use styleLightContent');
         exec(null, null, "StatusBar", "styleBlackTranslucent", []);
     },
 
     styleBlackOpaque: function () {
-        // #FF000000 ? Apple says to use lightContent instead
+        console.warn('styleBlackOpaque is deprecated and will be removed in next major release, use styleLightContent');
         exec(null, null, "StatusBar", "styleBlackOpaque", []);
     },
 

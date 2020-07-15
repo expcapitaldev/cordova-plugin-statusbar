@@ -92,7 +92,11 @@ static const void *kStatusBarStyle = &kStatusBarStyle;
 
 -(void)cordovaViewWillAppear:(NSNotification*)notification
 {
-    [self resizeWebView];
+    //add a small delay ( 0.1 seconds ) or statusbar size will be wrong
+    __weak CDVStatusBar* weakSelf = self;
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.1 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+        [weakSelf resizeWebView];
+    });
 }
 
 -(void)statusBarDidChangeFrame:(NSNotification*)notification
@@ -133,7 +137,11 @@ static const void *kStatusBarStyle = &kStatusBarStyle;
 
     setting  = @"StatusBarStyle";
     if ([self settingForKey:setting]) {
-        [self setStatusBarStyle:[self settingForKey:setting]];
+        NSString * styleSetting = [self settingForKey:setting];
+        if ([styleSetting isEqualToString:@"blacktranslucent"] || [styleSetting isEqualToString:@"blackopaque"]) {
+            NSLog(@"%@ is deprecated and will be removed in next major release, use lightcontent", styleSetting);
+        }
+        [self setStatusBarStyle:styleSetting];
     }
 
     setting  = @"StatusBarDefaultScrollToTop";
@@ -281,6 +289,8 @@ static const void *kStatusBarStyle = &kStatusBarStyle;
         [self styleDefault:nil];
     } else if ([lcStatusBarStyle isEqualToString:@"lightcontent"]) {
         [self styleLightContent:nil];
+    } else if ([lcStatusBarStyle isEqualToString:@"darkcontent"]) {
+        [self styleDarkContent:nil];
     } else if ([lcStatusBarStyle isEqualToString:@"blacktranslucent"]) {
         [self styleBlackTranslucent:nil];
     } else if ([lcStatusBarStyle isEqualToString:@"blackopaque"]) {
@@ -296,6 +306,16 @@ static const void *kStatusBarStyle = &kStatusBarStyle;
 - (void) styleLightContent:(CDVInvokedUrlCommand*)command
 {
     [self setStyleForStatusBar:UIStatusBarStyleLightContent];
+}
+
+- (void) styleDarkContent:(CDVInvokedUrlCommand*)command
+{
+    if (@available(iOS 13.0, *)) {
+        // [self setStyleForStatusBar:UIStatusBarStyleDarkContent];
+        [self setStyleForStatusBar:3];
+    } else {
+        [self styleDefault: command];
+    }
 }
 
 - (void) styleBlackTranslucent:(CDVInvokedUrlCommand*)command

@@ -34,9 +34,7 @@ description: Control the device status bar.
 This installation method requires cordova 5.0+
 
     cordova plugin add cordova-plugin-statusbar
-Older versions of cordova can still install via the __deprecated__ id
 
-    cordova plugin add org.apache.cordova.statusbar
 It is also possible to install via repo url directly ( unstable )
 
     cordova plugin add https://github.com/apache/cordova-plugin-statusbar.git
@@ -59,7 +57,7 @@ Preferences
 
         <preference name="StatusBarBackgroundColor" value="#000000" />
 
-- __StatusBarStyle__ (status bar style, defaults to lightcontent). Set the status bar style. Available options default, lightcontent, blacktranslucent, blackopaque.
+- __StatusBarStyle__ (status bar style, defaults to lightcontent). Set the status bar style (e.g. text color). Available options: `default`, `lightcontent`, `darkcontent`. `blacktranslucent` and `blackopaque` are also available, but __deprecated__, will be removed in next major release, use `lightcontent` instead.
 
         <preference name="StatusBarStyle" value="lightcontent" />
 
@@ -84,6 +82,15 @@ if (cordova.platformId == 'android') {
     StatusBar.backgroundColorByHexString('#33000000');
 }
 ```
+
+### iOS Quirks
+Starting with iOS 11 you must include `viewport-fit=cover` in your viewport meta tag if you want the status bar to overlay the webview:
+
+```html
+<meta name="viewport" content="initial-scale=1, width=device-width, viewport-fit=cover">
+```
+
+
 
 Hiding at startup
 -----------
@@ -113,6 +120,7 @@ Although in the global scope, it is not available until after the `deviceready` 
 - StatusBar.overlaysWebView
 - StatusBar.styleDefault
 - StatusBar.styleLightContent
+- StatusBar.styleDarkContent
 - StatusBar.styleBlackTranslucent
 - StatusBar.styleBlackOpaque
 - StatusBar.backgroundColorByName
@@ -159,6 +167,7 @@ StatusBar.styleDefault
 =================
 
 Use the default statusbar (dark text, for light backgrounds).
+For iOS - dark or light text depending on a device current theme.
 
     StatusBar.styleDefault();
 
@@ -168,9 +177,7 @@ Supported Platforms
 
 - iOS
 - Android 6+
-- Windows Phone 7
-- Windows Phone 8
-- Windows Phone 8.1
+- Windows
 
 StatusBar.styleLightContent
 =================
@@ -185,12 +192,27 @@ Supported Platforms
 
 - iOS
 - Android 6+
-- Windows Phone 7
-- Windows Phone 8
-- Windows Phone 8.1
+- Windows
+
+StatusBar.styleDarkContent
+=================
+
+Use the darkContent statusbar (dark text, for light backgrounds).
+
+    StatusBar.styleDarkContent();
+
+
+Supported Platforms
+-------------------
+
+- iOS
+- Android 6+
+- Windows
 
 StatusBar.styleBlackTranslucent
 =================
+
+Note: `styleBlackTranslucent` is __deprecated__ and will be removed in next major release, use `styleLightContent` instead.
 
 Use the blackTranslucent statusbar (light text, for dark backgrounds).
 
@@ -202,12 +224,12 @@ Supported Platforms
 
 - iOS
 - Android 6+
-- Windows Phone 7
-- Windows Phone 8
-- Windows Phone 8.1
+- Windows
 
 StatusBar.styleBlackOpaque
 =================
+
+Note: `styleBlackOpaque` is __deprecated__ and will be removed in next major release, use `styleLightContent` instead.
 
 Use the blackOpaque statusbar (light text, for dark backgrounds).
 
@@ -219,9 +241,7 @@ Supported Platforms
 
 - iOS
 - Android 6+
-- Windows Phone 7
-- Windows Phone 8
-- Windows Phone 8.1
+- Windows
 
 
 StatusBar.backgroundColorByName
@@ -241,9 +261,7 @@ Supported Platforms
 
 - iOS
 - Android 5+
-- Windows Phone 7
-- Windows Phone 8
-- Windows Phone 8.1
+- Windows
 
 StatusBar.backgroundColorByHexString
 =================
@@ -266,9 +284,7 @@ Supported Platforms
 
 - iOS
 - Android 5+
-- Windows Phone 7
-- Windows Phone 8
-- Windows Phone 8.1
+- Windows
 
 StatusBar.hide
 =================
@@ -283,9 +299,7 @@ Supported Platforms
 
 - iOS
 - Android
-- Windows Phone 7
-- Windows Phone 8
-- Windows Phone 8.1
+- Windows
 
 StatusBar.show
 =================
@@ -300,10 +314,7 @@ Supported Platforms
 
 - iOS
 - Android
-- Windows Phone 7
-- Windows Phone 8
-- Windows Phone 8.1
-
+- Windows
 
 StatusBar.isVisible
 =================
@@ -320,10 +331,7 @@ Supported Platforms
 
 - iOS
 - Android
-- Windows Phone 7
-- Windows Phone 8
-- Windows Phone 8.1
-
+- Windows
 
 statusTap
 =========
