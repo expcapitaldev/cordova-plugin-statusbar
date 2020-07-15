@@ -20,6 +20,9 @@
 -->
 # Release Notes
 
+### 2.4.4-dev (July 15, 2020)
+- feat(iOS, android): Add new styleDarkContent with possibility of selection of default style that is very important for iOS
+
 ### 2.4.3 (Jun 19, 2019)
 
 -   docs: Improved documentation and removed text that implies iOS only ([#130](https://github.com/apache/cordova-plugin-statusbar/issues/130)) ([`33e410a`](https://github.com/apache/cordova-plugin-statusbar/commit/33e410a), [`14b1513`](https://github.com/apache/cordova-plugin-statusbar/commit/14b1513))
